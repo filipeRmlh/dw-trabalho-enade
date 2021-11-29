@@ -80,7 +80,6 @@ def relacao_renda_nota_media(connection_cursor):
              {"label": "faixa de renda (sal. mínimo)", "values": degree}, fig_size=(12, 5))
 
 
-
 def media_notas_nos_estados(connection_cursor):
     query = "SELECT uf, avg(nota) as avgnota FROM localidade, nota_geral, participacao as p where " \
             "p.nota_geral_id = nota_geral.id and p.localidade_id = localidade.id  group  by uf, regiao order by avgnota"
@@ -91,15 +90,17 @@ def media_notas_nos_estados(connection_cursor):
         uf.append(i[0])
         avgNota.append(i[1])
     plot_barh("Media de notas por estado", {"label": "media de nota", "values": avgNota},
-             {"label": "UF", "values": uf})
+              {"label": "UF", "values": uf})
 
 
 def generate_plots(connection_cursor):
+    print('Starting loading plots')
     notas_homens_vs_mulheres(connection_cursor)
     participacao_homens_mulheres(connection_cursor)
     participacao_curso(connection_cursor)
     relacao_renda_nota_media(connection_cursor)
     media_notas_nos_estados(connection_cursor)
+    print('Finishing loading plots')
 
 
 if __name__ == '__main__':

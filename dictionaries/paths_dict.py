@@ -2,6 +2,8 @@ import pathlib
 
 curr_dir = pathlib.Path(__file__).parent.resolve()
 
+root_path = pathlib.Path(f"{curr_dir}/..").resolve()
+
 data_root_path = pathlib.Path(f"{curr_dir}/../data").resolve()
 
 extracted_data_root_path = f"{data_root_path}/extracted_files"
@@ -21,3 +23,5 @@ dictionary_extracted_data = {
     "2018": f"{extracted_data_root_path}/2018/2018/3.DADOS/microdados_enade_2018.txt",
     "2019": f"{extracted_data_root_path}/2019/3.DADOS/microdados_enade_2019.txt",
 }
+
+schema_script_path = f"{root_path}/database/database_schema.sql"
