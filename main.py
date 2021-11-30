@@ -2,6 +2,8 @@ import os
 import shutil
 import sqlite3
 import sys
+
+from analysis.learning import run_learning
 from download.get_data_from_web import get_data
 from database.load_data_into_base import connect_and_load
 from dictionaries.paths_dict import database_root_path, zip_data_root_path, data_root_path, schema_script_path
@@ -49,9 +51,18 @@ def run_process():
             if is_unique_error:
                 print('DB is already filled up')
         generate_plots(connection.cursor())
+        run_learning(connection)
         end_connection(connection)
     else:
         raise Exception(f"db don't exist: {database_root_path}, aborting")
+
+
+def run_only_learning():
+    print('Starting connection')
+    connection = sqlite3.connect(database_root_path)
+    run_learning(connection)
+    print('Closing connection')
+    connection.close()
 
 
 def delete_data():
@@ -61,7 +72,10 @@ def delete_data():
 
 
 if __name__ == '__main__':
-    if len(sys.argv) == 2 and sys.argv[1] == 'reset':
+    argument = sys.argv[1] if len(sys.argv) == 2 else None
+    if argument == "reset":
         delete_data()
+    elif argument == "learn":
+        run_only_learning()
     else:
         run_process()
